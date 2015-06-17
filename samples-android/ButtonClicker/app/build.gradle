@@ -1,0 +1,44 @@
+apply plugin: 'com.android.model.application'
+
+model {
+    android {
+        compileSdkVersion = 21
+        buildToolsVersion ="22.0.1"
+
+        defaultConfig.with {
+            applicationId = "com.google.example.games.bc3"
+            minSdkVersion.apiLevel      = 19
+            targetSdkVersion.apiLevel   = 19
+        }
+    }
+
+    android.lintOptions {
+        abortOnError false
+    }
+
+    /*
+     * native build settings
+     */
+    android.ndk {
+        moduleName = "ButtonClickerNativeActivity"
+        cppFlags += [file("src/main/jni/native_app_glue"),
+		     file("src/main/jni/cpufeatures"),
+		     file("src/main/jni/ndk_helper"),
+    		     file("src/main/jni/jui_helper"),
+		     file("src/main/jni/gpg-cpp-sdk/android/include")].collect {"-I" + it}
+	println cppFlags
+	stl = "c++_static"
+	ldLibs = ["android", "log", "GLESv2", "EGL", "atomic", "z", "gpg"]
+    }
+    android.productFlavors {
+        // for detailed abiFilter descriptions, refer to "Supported ABIs" @
+        // https://developer.android.com/ndk/guides/abis.html#sa
+        create("arm7") {
+            ndkConfig.abiFilters += "armeabi-v7a"
+        }
+    }
+}
+dependencies {
+    compile 'com.google.android.gms:play-services-games:7.5.0'
+    compile 'com.google.android.gms:play-services-base:7.5.0'
+}    
