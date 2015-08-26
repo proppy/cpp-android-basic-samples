@@ -2,43 +2,38 @@ apply plugin: 'com.android.model.application'
 
 model {
     android {
-        compileSdkVersion = 21
-        buildToolsVersion ="22.0.1"
+        compileSdkVersion = 23
+        buildToolsVersion = "23.0.0"
 
         defaultConfig.with {
-            applicationId = "com.google.example.games.bc3"
-            minSdkVersion.apiLevel      = 19
-            targetSdkVersion.apiLevel   = 19
+            applicationId = "com.mycompany.android.codelab.proppy.lollygagger"
+            minSdkVersion.apiLevel    = 9
+            targetSdkVersion.apiLevel = 23
         }
     }
-
-    android.lintOptions {
-        abortOnError false
-    }
-
-    /*
-     * native build settings
-     */
     android.ndk {
-        moduleName = "ButtonClickerNativeActivity"
-        cppFlags += [file("src/main/jni/native_app_glue"),
-		     file("src/main/jni/cpufeatures"),
-		     file("src/main/jni/ndk_helper"),
-    		     file("src/main/jni/jui_helper"),
-		     file("src/main/jni/gpg-cpp-sdk/android/include")].collect {"-I" + it}
-	println cppFlags
-	stl = "c++_static"
-	ldLibs = ["android", "log", "GLESv2", "EGL", "atomic", "z", "gpg"]
+        moduleName = "button-clicker"
+        cppFlags += "-I${file("../gpg-cpp-sdk/android/include")}".toString()
+        ldLibs += ["log", "android", "EGL", "GLESv1_CM", "gpg", "z"]
+        stl    = "c++_static"
+    }
+    android.buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles  += file('proguard-rules.txt')
+        }
     }
     android.productFlavors {
-        // for detailed abiFilter descriptions, refer to "Supported ABIs" @
-        // https://developer.android.com/ndk/guides/abis.html#sa
-        create("arm7") {
-            ndkConfig.abiFilters += "armeabi-v7a"
+        create ("arm8") {
+            ndk.abiFilters += "arm64-v8a"
+            ndk.ldFlags += "-L${file("../gpg-cpp-sdk/android/lib/c++/arm64-v8a")}".toString()
         }
     }
 }
+
 dependencies {
-    compile 'com.google.android.gms:play-services-games:7.5.0'
-    compile 'com.google.android.gms:play-services-base:7.5.0'
-}    
+    compile 'com.google.android.gms:play-services-games:7+'
+    compile 'com.google.android.gms:play-services-base:7+'
+    compile 'com.google.android.gms:play-services-appstate:7+'
+    compile 'com.google.android.gms:play-services-nearby:7+'
+}

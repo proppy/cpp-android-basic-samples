@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.example.games.bc3"
+    package="com.mycompany.android.codelab.proppy.lollygagger"
     android:versionCode="1"
     android:versionName="1.0" >
     
@@ -14,7 +14,7 @@
     </uses-permission>
 
     <application
-        android:name="com.google.example.games.bc3.ButtonClickerApplication"
+        android:name=""
         android:allowBackup="true"
         android:hasCode="true"
         android:icon="@drawable/ic_launcher"
