@@ -12,7 +12,7 @@ model {
         }
     }
     android.ndk {
-        moduleName = "button-clicker"
+        moduleName = "ButtonClickerNativeActivity"
         cppFlags += "-I${file("src/main/jni/native_app_glue")}".toString()
         cppFlags += "-I${file("src/main/jni/cpufeatures")}".toString()
         cppFlags += "-I${file("src/main/jni/ndk_helper")}".toString()
